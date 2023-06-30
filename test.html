@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title></title>
+	<style>
+		* {
+			font-family: 'Gulim';
+			font-weight: bold;
+			color: #256199;
+			margin: 0px;
+			padding: 0px;
+		}
+		
+		#outertable {
+			width: 797px;
+			margin: 30px;
+			border: 2px solid black;
+		}
+
+		#innertable {
+			margin: 38px;
+			border: 1px solid #BBCBDA;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			border-collapse : collapse
+		}
+
+		td {
+			font-size: 26px;
+			padding: 20px;
+			margin: 0px;
+			width: 322px;
+			height: 45px;
+			text-align: center;
+			border: 1px solid #BBCBDA;
+			cursor: pointer;
+		}
+		td#title {
+			cursor: default;
+		}
+
+		td.clicked {
+			background-color: red;
+			color: white;
+		}
+
+		span {
+			background-color: inherit;
+			color: inherit;
+		}
+
+		#title {
+			padding: 0px;
+			height: 35px;
+			text-align: center;
+			background-color: #EAEFF5;
+		}
+
+		button {
+			font-family: 'Malgun Gothic'; 
+			font-size: 18px; 
+			width: 150px; 
+			height: 50px;
+			background-color: #256199;
+			border-radius: 25px;
+			margin: 32px;
+			border: none;
+			padding: 2px;
+			color: white;
+			float: left;
+			cursor: pointer;
+			box-shadow: 3px 3px 3px rgb(61, 60, 60);
+			transition-duration: 0.1s;
+		}
+
+		button:active {
+			margin-left: 37px;
+			margin-top: 37px;
+			box-shadow: none;
+		}
+
+		.disabled {
+			opacity: 0.3;
+			cursor: not-allowed;
+		}
+	</style>
+</head>
+<body>
+	<div id="outertable">
+		<img src="1.png" alt="">
+		<img src="2.png" alt="" style="padding-left: 30px;">
+		<table id="innertable">
+			<tbody>
+				<tr>
+					<td id="title" colspan="2">자동차 등록번호</td>
+				</tr>
+				<tr>
+					<td onclick="highlight(this);">① <span id="no1">123가1234</span></td>
+					<td onclick="highlight(this);">⑥ <span id="no6">123가1234</span></td>
+				</tr>
+				<tr>
+					<td onclick="highlight(this);">② <span id="no2">123가1234</span></td>
+					<td onclick="highlight(this);">⑦ <span id="no7">123가1234</span></td>
+				</tr>
+				<tr>
+					<td onclick="highlight(this);">③ <span id="no3">123가1234</span></td>
+					<td onclick="highlight(this);">⑧ <span id="no8">123가1234</span></td>
+				</tr>
+				<tr>
+					<td onclick="highlight(this);">④ <span id="no4">123가1234</span></td>
+					<td onclick="highlight(this);">⑨ <span id="no9">123가1234</span></td>
+				</tr>
+				<tr>
+					<td onclick="highlight(this);">⑤ <span id="no5">123가1234</span></td>
+					<td onclick="highlight(this);">⑩ <span id="no10">123가1234</span></td>
+				</tr>
+			</tbody>
+		</table>
+		<div style="color: blue; font-size: 12px; font-weight: 400;">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*원하시는 자동차등록번호를 선택하세요.<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*선택된 자동차등록번호는 다른 등록민원에 의해 사용될 수 있으므로, 기 사용된 경우에는 다시 선택하여 주십시요. </div>
+	</div>
+	<br>
+
+	<button id="truck_paint">화물(페인트천공)</button>
+	<button id="truck_film">화물(필름)</button>
+	<button id="truck_elec">화물(전기)</button>
+	<button id="bus_film">승합(필름)</button>
+
+	<script>
+		// 스크롤바 제거
+		document.body.style.overflow = "hidden";
+
+		// 브라우저 크기
+		window.resizeTo(880, 800);
+
+		// 화물(페인트)
+		truck_paint = [
+			"94로1814", "94로1842", "94로1874", "94로1934", "95노6304",
+			"95노6394", "95노6496", "83저4694", "83저4742", "827머7184",
+			"806머4918", "806머4931", "806머4943"
+		];
+	
+		// 화물(필름)
+		truck_film = [
+			"844무4014", "844무4024", "844무4044", "844무4084", "806가4164", 
+			"806가4174", "806가4194", "806거2544", "805두7201", "805두7208",
+			"805두7214", "805두7216", "805두7218", "805두7224", "805두7241",
+			"805두7243", "805두7244", "805두7245"
+		];
+	
+		// 화물(전기)
+		truck_elec = [
+			"84마7354", "84마7364", "93고4124", "93고4134", "93고4154",
+			"93고4174", "93고4176", "93고4184", "93고4194", "93고4624",
+			"93고4641", "93고4644", "93고4674", "93고4695", "93고4714",
+			"93고4742"
+		];
+
+		// 승합(필름)
+		bus_film = [
+			"704루4124", "704루4126", "704루4128", "704루4134", "704루4144",
+			"704루4146", "704루4148", "704루4154", "704루4162", "704루4163",
+			"704루4164", "704루4168", "704루4172", "704루4174", "704루4176",
+			"704루4180", "704루4182", "704루4183", "704루4184", "704루4186",
+			"704루4190", "704루4194", "700누2018", "700누2036", "700누2042",
+			"700누2043", "700누2044", "700누2046", "700누2048", "700누2049",
+			"700누2054"
+		];
+	
+	
+		// 랜덤 10개 뽑기 ==> 리턴값은 등록번호 10개 담은 배열
+		const select10 = (type) => {
+			let randomIndexArray = [];
+			let numberArray = [];
+
+			if (type === "truck_paint") {
+				totalIndex = truck_paint.length;
+			} else if (type === "truck_film") {
+				totalIndex = truck_film.length;
+			} else if (type === "truck_elec") {
+				totalIndex = truck_elec.length;
+			} else if (type ==="bus_film") {
+				totalIndex = bus_film.length;
+			}
+
+			for (i=0; i<10; i++) {
+				randomNum = Math.floor(Math.random() * totalIndex);
+				if (randomIndexArray.indexOf(randomNum) === -1) {
+					randomIndexArray.push(randomNum);
+					if (type === "truck_paint") {
+						numberArray.push(truck_paint[randomNum]);
+					} else if (type === "truck_film") {
+						numberArray.push(truck_film[randomNum]);
+					} else if (type === "truck_elec") {
+						numberArray.push(truck_elec[randomNum]);
+					} else if (type === "bus_film") {
+						numberArray.push(bus_film[randomNum]);
+					}
+				} else {
+					i--;
+				}
+			}
+			return numberArray;
+		}
+	
+		// 버튼 4개 객체
+		let button_truck_paint = document.querySelector("#truck_paint");
+		let button_truck_film = document.querySelector("#truck_film");
+		let button_truck_elec = document.querySelector("#truck_elec");
+		let button_bus_film = document.querySelector("#bus_film");
+
+		// 종류별 10개 미만으로 남으면 disabled
+		if (truck_paint.length < 10) {
+			button_truck_paint.disabled = true;
+			button_truck_paint.classList.toggle("disabled");
+		} else if (truck_film.length < 10) {
+			button_truck_film.disabled = true;
+			button_truck_film.classList.toggle("disabled");
+		} else if (truck_elec.length < 10) {
+			button_truck_elec.disabled = true;
+			button_truck_elec.classList.toggle("disabled");
+		} else if (bus_film.length < 10) {
+			button_bus_film.disabled = true;
+			button_bus_film.classList.toggle("disabled");
+		}
+		
+		// 버튼 이벤트 핸들러
+		function generate(type) {
+			// 이전에 선택된 "빨간색" 있다면 제거
+			cells = document.getElementsByTagName("td");
+			for(i=1; i<cells.length; i++) {
+				cells[i].classList.remove("clicked");
+			}
+
+			// 등록번호 10개 랜덤 추출 + 셀값에 반영
+			regNums = select10(type);
+			for(i=0; i<10; i++) {
+				target = document.querySelector("#no" + (i + 1));
+				target.innerHTML = regNums[i];
+			}
+		}
+
+		// 선택한 셀에만 "빨간색" 적용
+		function highlight(target) {
+			cells = target.parentNode.parentNode.getElementsByTagName("td");
+			for(i=1; i<cells.length; i++) {
+				if(cells[i] != target) {
+					cells[i].classList.remove("clicked");
+				} else {
+					cells[i].classList.add("clicked");
+				}
+			}
+		}
+
+		// 버튼에 이벤트 핸들러 붙이기
+		button_truck_paint.addEventListener("click", (event) => generate("truck_paint"));
+		button_truck_film.addEventListener("click", (event) => generate("truck_film"));
+		button_truck_elec.addEventListener("click", (event) => generate("truck_elec"));
+		button_bus_film.addEventListener("click", (event) => generate("bus_film"));
+
+	</script>
+</body>
+</html>
